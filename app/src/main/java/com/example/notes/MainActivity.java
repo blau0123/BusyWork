@@ -121,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
 
     @Override
     public void onItemClicked(int index) {
-
+        Intent i = new Intent(MainActivity.this, ShowNote.class);
+        i.putExtra("title", ApplicationClass.notes.get(index).getTitle());
+        i.putExtra("body", ApplicationClass.notes.get(index).getNote());
+        startActivity(i);
     }
 }
