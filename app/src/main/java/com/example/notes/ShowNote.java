@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class ShowNote extends AppCompatActivity {
     TextView tvBody, tvTitle;
     Button btnEdit;
+    Button btnDelete;
     // code for editnote to know that editnote is returning back data
     final int editNoteCode = 200;
     int id;
@@ -29,6 +30,7 @@ public class ShowNote extends AppCompatActivity {
         tvBody = findViewById(R.id.tvBody);
         tvTitle = findViewById(R.id.tvTitle);
         btnEdit = findViewById(R.id.btnEdit);
+        btnDelete = findViewById(R.id.btnDelete);
     }
 
     /*
@@ -51,6 +53,21 @@ public class ShowNote extends AppCompatActivity {
         // gives editnote the index of item clicked (which will be the rowid in the database)
         i.putExtra("itemID", id);
         startActivityForResult(i, editNoteCode);
+    }
+
+    /*
+    Delete note and return to previous activity (MainActivity)
+     */
+    public void btnDeleteClicked(View v){
+        NotesDB db = new NotesDB(this);
+        db.open();
+        db.deleteEntry(id);
+        db.close();
+
+        // return to updated MainActivity
+        Intent i = new Intent(this, MainActivity.class);
+        setResult(RESULT_OK);
+        this.finish();
     }
 
     /*

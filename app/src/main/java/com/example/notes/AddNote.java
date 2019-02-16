@@ -49,8 +49,8 @@ public class AddNote extends AppCompatActivity {
                 String title = etInsertTitle.getText().toString().trim();
                 String note = etInsertNote.getText().toString().trim();
                 // get current date of adding this note as milliseconds
-                //long currDate = Calendar.getInstance().getTime().getTime();
-                db.addNote(new Note(title, note));
+                long currDate = Calendar.getInstance().getTime().getTime();
+                db.addNote(new Note(title, note, currDate));
                 db.close();
                 Toast.makeText(this, "Note successfully saved!", Toast.LENGTH_SHORT).show();
 

@@ -11,10 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemClicked{
     Button btnAddNote;
@@ -68,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
             db.close();
         }
         catch(SQLException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            System.out.println(e.getMessage());
         }
         //reverseNotes(notes);
     }
@@ -93,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
         @Override
         protected void onPostExecute(Void aVoid){
             // reverse the order of ApplicationClass.notes
-            ApplicationClass.notes = reverseNotes(ApplicationClass.notes);
+            //ApplicationClass.notes = reverseNotes(ApplicationClass.notes);
 
             //set recyclerview to notes list if the list is >0
             if (ApplicationClass.notes.size() != 0){
@@ -115,26 +112,11 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     }
 
     /*
-    Getting list of notes from db will give them from oldest -> earliest entries, but
-    want the most recent entry to be first
-     */
-    public ArrayList<Note> reverseNotes(ArrayList<Note> unReversed){
-        // make temp arraylist to hold the correct ordering of the contents of AppClass.notes
-        ArrayList<Note> tempList = new ArrayList<>();
-        for (int i = unReversed.size() - 1; i >= 0; i--){
-            tempList.add(unReversed.get(i));
-        }
-        return tempList;
-    }
-
-    /*
     Sends user to ShowNote when an item in the list was clicked
      */
     @Override
     public void onItemClicked(int index) {
         Intent i = new Intent(MainActivity.this, ShowNote.class);
-        //i.putExtra("title", ApplicationClass.notes.get(index).getTitle());
-        //i.putExtra("body", ApplicationClass.notes.get(index).getNote());
         // have to subtract from size because reversed, so last item is first
         i.putExtra("itemID", ApplicationClass.notes.get(index).getID());
         startActivityForResult(i, showNoteCode);

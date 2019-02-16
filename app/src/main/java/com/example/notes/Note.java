@@ -5,25 +5,25 @@ import java.util.Date;
 public class Note {
     private int id;
     private String title, note;
-    //private Date date;
+    private long date;
 
     public Note(){
 
     }
 
     // ctor to set all instance variables
-    public Note( int noteId, String noteTitle, String noteBody){
+    public Note( int noteId, String noteTitle, String noteBody, long date){
         id = noteId;
         title = noteTitle;
         note = noteBody;
-        //this.date = date;
+        this.date = date;
     }
 
     //ctor to just set title and note
-    public Note( String noteTitle, String noteBody ){
+    public Note( String noteTitle, String noteBody, long date ){
         title = noteTitle;
         note = noteBody;
-        //this.date = date;
+        this.date = date;
     }
 
     //getters
@@ -39,7 +39,7 @@ public class Note {
         return note;
     }
 
-    //public Date getDate(){ return date; }
+    public long getDate(){ return date; }
 
     //setters
     public void setID( int noteId ){
@@ -54,5 +54,7 @@ public class Note {
         note = noteBody;
     }
 
-    //public void setDate( Date noteDate ) { date = noteDate; }
+    public void setDate( long noteDate ) { date = noteDate; }
+
+
 }

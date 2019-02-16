@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Calendar;
+
 public class EditNote extends AppCompatActivity {
     EditText etEditTitle, etEditNote;
     Button btnFinishEdit;
@@ -47,7 +49,8 @@ public class EditNote extends AppCompatActivity {
         NotesDB db = new NotesDB(this);
         db.open();
         db.updateEntry(id, etEditTitle.getText().toString().trim(),
-                etEditNote.getText().toString().trim());
+                etEditNote.getText().toString().trim(),
+                Calendar.getInstance().getTime().getTime());
         db.close();
 
         // return back to ShowNote

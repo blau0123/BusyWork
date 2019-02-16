@@ -69,8 +69,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
         String titleText = notes.get(i).getTitle();
         viewHolder.tvListTitle.setText(titleText);
         //only shows the first 15 characters of the note body, or whole body if body is < 15 characters
-        if (notes.get(i).getNote().length() > 15) {
-            viewHolder.tvListNote.setText(notes.get(i).getNote().substring(0, 15));
+        if (notes.get(i).getNote().length() > 50) {
+            viewHolder.tvListNote.setText(notes.get(i).getNote().substring(0, 50));
         }
         else{
             viewHolder.tvListNote.setText(notes.get(i).getNote());
