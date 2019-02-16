@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     RecyclerView rv;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
+    // code for when returning from shownote in case any note was updated
+    int showNoteCode = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +97,19 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
 
             //set recyclerview to notes list if the list is >0
             if (ApplicationClass.notes.size() != 0){
+                /*
                 if (myAdapter == null){
                     myAdapter = new NoteAdapter(MainActivity.this, ApplicationClass.notes);
                     rv.setAdapter(myAdapter);
                 }
                 else {
+                    System.out.println("updating data!");
                     myAdapter.notifyDataSetChanged();
                 }
+                */
+                // how come notifydatasetchanged() isn't working?
+                myAdapter = new NoteAdapter(MainActivity.this, ApplicationClass.notes);
+                rv.setAdapter(myAdapter);
             }
         }
     }
@@ -119,11 +127,27 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
         return tempList;
     }
 
+    /*
+    Sends user to ShowNote when an item in the list was clicked
+     */
     @Override
     public void onItemClicked(int index) {
         Intent i = new Intent(MainActivity.this, ShowNote.class);
-        i.putExtra("title", ApplicationClass.notes.get(index).getTitle());
-        i.putExtra("body", ApplicationClass.notes.get(index).getNote());
-        startActivity(i);
+        //i.putExtra("title", ApplicationClass.notes.get(index).getTitle());
+        //i.putExtra("body", ApplicationClass.notes.get(index).getNote());
+        // have to subtract from size because reversed, so last item is first
+        i.putExtra("itemID", ApplicationClass.notes.get(index).getID());
+        startActivityForResult(i, showNoteCode);
+    }
+
+    /*
+    Updates the ApplicationClass.notes list and the recyclerview (if there's any changes to the
+    notes)
+     */
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        if (requestCode == showNoteCode){
+            // will update recyclerview no matter what result code
+            new getData().execute();
+        }
     }
 }
