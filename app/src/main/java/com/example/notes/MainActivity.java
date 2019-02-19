@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,8 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemClicked{
-    Button btnAddNote;
+    //Button btnAddNote;
+    FloatingActionButton fab;
     //variables to work with recyclerview
     RecyclerView rv;
     RecyclerView.Adapter myAdapter;
@@ -31,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     }
 
     public void initViews(){
-        btnAddNote = findViewById(R.id.btnAddNote);
+        //btnAddNote = findViewById(R.id.btnAddNote);
+        fab = findViewById(R.id.fab);
         rv = findViewById(R.id.list);
     }
 
@@ -43,8 +46,21 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
 
     /*
     Method for when add note button is clicked; connected to component in xml
-     */
+
     public void btnAddNoteClicked(View v){
+        //creates intent that sends user to AddNote activity
+        Intent intent = new Intent(MainActivity.this, com.example.notes.AddNote.class);
+        startActivity(intent);
+
+        //in addnote, will add note to db and now get note from db and show
+        new getData().execute();
+    }
+    */
+
+    /*
+    Methods for when Floating Action Button is clicked (adds note)
+     */
+    public void addNoteFAB(View v){
         //creates intent that sends user to AddNote activity
         Intent intent = new Intent(MainActivity.this, com.example.notes.AddNote.class);
         startActivity(intent);
