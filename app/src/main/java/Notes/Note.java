@@ -1,4 +1,4 @@
-package com.example.notes;
+package Notes;
 
 import java.util.Date;
 

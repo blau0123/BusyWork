@@ -1,4 +1,4 @@
-package com.example.notes;
+package Notes;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -46,7 +46,6 @@ public class NotesDB {
             String sqlCode = "CREATE TABLE " + DATABASE_TABLE + " (" + KEY_ROWID +
                     " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TITLE + " TEXT NOT NULL, " +
                     KEY_NOTE + " TEXT, " + KEY_DATE + " LONG NOT NULL);";
-            //" TEXT, " + KEY_DATE + " LONG NOT NULL);";
             db.execSQL(sqlCode);
         }
 

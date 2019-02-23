@@ -1,4 +1,4 @@
-package com.example.notes;
+package Notes;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.notes.MainActivity;
+import com.example.notes.R;
 
 public class ShowNote extends AppCompatActivity {
     TextView tvBody, tvTitle;

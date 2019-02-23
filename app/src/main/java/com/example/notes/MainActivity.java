@@ -1,6 +1,5 @@
 package com.example.notes;
 
-import android.app.Application;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.AsyncTask;
@@ -11,7 +10,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+
+import Notes.AddNote;
+import Notes.ApplicationClass;
+import Notes.NoteAdapter;
+import Notes.NotesDB;
+import Notes.ShowNote;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemClicked{
     //Button btnAddNote;
@@ -38,6 +42,14 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
         rv = findViewById(R.id.list);
     }
 
+    /*
+    -------------------------TEMPORARY BUTTON TO TEST TODO FUNCTION ------------------------------
+     */
+    public void bringToTodo(View v){
+        Intent i = new Intent(this, ShowTodo.class);
+        startActivity(i);
+    }
+
     public void initObjects(){
         rv.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -45,24 +57,11 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     }
 
     /*
-    Method for when add note button is clicked; connected to component in xml
-
-    public void btnAddNoteClicked(View v){
-        //creates intent that sends user to AddNote activity
-        Intent intent = new Intent(MainActivity.this, com.example.notes.AddNote.class);
-        startActivity(intent);
-
-        //in addnote, will add note to db and now get note from db and show
-        new getData().execute();
-    }
-    */
-
-    /*
     Methods for when Floating Action Button is clicked (adds note)
      */
     public void addNoteFAB(View v){
         //creates intent that sends user to AddNote activity
-        Intent intent = new Intent(MainActivity.this, com.example.notes.AddNote.class);
+        Intent intent = new Intent(MainActivity.this, AddNote.class);
         startActivity(intent);
 
         //in addnote, will add note to db and now get note from db and show
@@ -110,17 +109,6 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
 
             //set recyclerview to notes list if the list is >0
             if (ApplicationClass.notes.size() != 0){
-                /*
-                if (myAdapter == null){
-                    myAdapter = new NoteAdapter(MainActivity.this, ApplicationClass.notes);
-                    rv.setAdapter(myAdapter);
-                }
-                else {
-                    System.out.println("updating data!");
-                    myAdapter.notifyDataSetChanged();
-                }
-                */
-                // how come notifydatasetchanged() isn't working?
                 myAdapter = new NoteAdapter(MainActivity.this, ApplicationClass.notes);
                 rv.setAdapter(myAdapter);
             }

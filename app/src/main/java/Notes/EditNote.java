@@ -1,11 +1,15 @@
-package com.example.notes;
+package Notes;
 
 import android.content.Intent;
+import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.notes.R;
 
 import java.util.Calendar;
 
@@ -46,12 +50,17 @@ public class EditNote extends AppCompatActivity {
      */
     public void finishEditClicked(View v){
         // update db with new text
-        NotesDB db = new NotesDB(this);
-        db.open();
-        db.updateEntry(id, etEditTitle.getText().toString().trim(),
-                etEditNote.getText().toString().trim(),
-                Calendar.getInstance().getTime().getTime());
-        db.close();
+        try {
+            NotesDB db = new NotesDB(this);
+            db.open();
+            db.updateEntry(id, etEditTitle.getText().toString().trim(),
+                    etEditNote.getText().toString().trim(),
+                    Calendar.getInstance().getTime().getTime());
+            db.close();
+        }
+        catch (SQLException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         // return back to ShowNote
         Intent finished = new Intent(this, ShowNote.class);
