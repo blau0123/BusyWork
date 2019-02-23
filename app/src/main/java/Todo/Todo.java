@@ -1,4 +1,4 @@
-package com.example.notes;
+package Todo;
 
 public class Todo {
     private String title, descr;
@@ -26,8 +26,9 @@ public class Todo {
         id = todoID;
     }
 
-    public Todo(String todoTitle, int todoPriority){
+    public Todo(String todoTitle, String todoDescr, int todoPriority){
         title = todoTitle;
+        descr = todoDescr;
         priority = todoPriority;
     }
 

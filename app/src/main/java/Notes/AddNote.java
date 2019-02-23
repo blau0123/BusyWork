@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.notes.MainActivity;
 import com.example.notes.R;
 
 import java.util.Calendar;
@@ -55,8 +54,8 @@ public class AddNote extends AppCompatActivity {
                 db.close();
                 Toast.makeText(this, "Note successfully saved!", Toast.LENGTH_SHORT).show();
 
-                // Brings user back to MainActivity (list of notes)
-                Intent i = new Intent(AddNote.this, MainActivity.class);
+                // Brings user back to MainNotes (list of notes)
+                Intent i = new Intent(AddNote.this, MainNotes.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }

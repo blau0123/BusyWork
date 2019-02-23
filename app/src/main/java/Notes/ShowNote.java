@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.notes.MainActivity;
 import com.example.notes.R;
 
 public class ShowNote extends AppCompatActivity {
@@ -59,7 +58,7 @@ public class ShowNote extends AppCompatActivity {
     }
 
     /*
-    Delete note and return to previous activity (MainActivity)
+    Delete note and return to previous activity (MainNotes)
      */
     public void btnDeleteClicked(View v){
         NotesDB db = new NotesDB(this);
@@ -67,8 +66,8 @@ public class ShowNote extends AppCompatActivity {
         db.deleteEntry(id);
         db.close();
 
-        // return to updated MainActivity
-        Intent i = new Intent(this, MainActivity.class);
+        // return to updated MainNotes
+        Intent i = new Intent(this, MainNotes.class);
         setResult(RESULT_OK);
         this.finish();
     }
@@ -105,14 +104,14 @@ public class ShowNote extends AppCompatActivity {
     }
 
     /*
-    When user presses back button, will send activity data back to mainactivity so mainactivity
+    When user presses back button, will send activity data back to mainnotes so mainnotes
     updates recyclerview
      */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, MainNotes.class);
         setResult(RESULT_OK);
         this.finish();
     }

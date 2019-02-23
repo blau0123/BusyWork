@@ -1,4 +1,4 @@
-package com.example.notes;
+package Todo;
 
 import android.content.Intent;
 import android.database.SQLException;
@@ -11,9 +11,15 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.notes.R;
+
 import java.util.ArrayList;
 
-public class ShowTodo extends AppCompatActivity {
+import Todo.AddTodo;
+import Todo.Todo;
+import Todo.TodoDB;
+
+public class MainTodo extends AppCompatActivity {
     LinearLayout high_layout, med_layout, low_layout;
     Button btnAddTodo;
     int showTodoCode = 199;
@@ -21,7 +27,7 @@ public class ShowTodo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_todo);
+        setContentView(R.layout.activity_main_todo);
 
         initViews();
         // for each priority, create checkboxes and add to appropriate linearlayout

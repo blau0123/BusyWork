@@ -1,4 +1,4 @@
-package com.example.notes;
+package Todo;
 
 import android.content.Intent;
 import android.database.SQLException;
@@ -6,12 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.notes.R;
+
 public class AddTodo extends AppCompatActivity {
-    EditText etTodo;
+    EditText etTodo, etDescr;
     RadioGroup rgPriority;
     int priority;
 
@@ -54,6 +55,7 @@ public class AddTodo extends AppCompatActivity {
 
     public void initViews(){
         etTodo = findViewById(R.id.etTodo);
+        etDescr = findViewById(R.id.etDescr);
         rgPriority = findViewById(R.id.rgPriority);
     }
 
@@ -72,8 +74,8 @@ public class AddTodo extends AppCompatActivity {
         else {
             enterTodoToDB();
 
-            // return back to showtodo with the priority of the new todo
-            Intent i = new Intent(this, ShowTodo.class);
+            // return back to maintodo with the priority of the new todo
+            Intent i = new Intent(this, MainTodo.class);
             i.putExtra("priority", priority);
             setResult(RESULT_OK, i);
             AddTodo.this.finish();
@@ -85,7 +87,8 @@ public class AddTodo extends AppCompatActivity {
      */
     public void enterTodoToDB(){
         try {
-            Todo newTodo = new Todo(etTodo.getText().toString().trim(), priority);
+            Todo newTodo = new Todo(etTodo.getText().toString().trim(),
+                    etDescr.getText().toString().trim(), priority);
             TodoDB db = new TodoDB(this);
             db.open();
             db.addTodo(newTodo);

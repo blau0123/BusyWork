@@ -1,4 +1,4 @@
-package com.example.notes;
+package Todo;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-
-import Notes.NotesDB;
 
 public class TodoDB {
     private static final String TAG = "TodoDB";

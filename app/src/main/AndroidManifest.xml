@@ -12,8 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddTodo"></activity>
-        <activity android:name=".ShowTodo" />
+        <activity android:name="Todo.MainTodo"></activity>
+        <activity android:name="Notes.MainNotes" />
+        <activity android:name="Todo.AddTodo" />
+        <activity android:name="Todo.ShowTodo" />
         <activity android:name="Notes.EditNote" />
         <activity android:name="Notes.ShowNote" />
         <activity android:name="Notes.AddNote" />
