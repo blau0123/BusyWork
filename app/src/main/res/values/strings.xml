@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Notes</string>
+    <string name="low_priority_5">Low Priority (5)</string>
+    <string name="add_todo">Add Todo</string>
+    <string name="medium_priority_3_4">Medium Priority (3-4)</string>
+    <string name="high_priority_1_2">High Priority (1-2)</string>
 </resources>

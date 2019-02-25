@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,62 +7,81 @@
     android:orientation="vertical"
     tools:context="Todo.MainTodo">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:text="To-Do List"
-        android:textSize="24sp" />
-
     <LinearLayout
-        android:id="@+id/high_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="High Priority (1-2)" />
-    </LinearLayout>
+            android:padding="10dp"
+            android:text="To-Do List"
+            android:textSize="24sp" />
 
-    <LinearLayout
-        android:id="@+id/med_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView3"
+        <LinearLayout
+            android:id="@+id/high_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Medium Priority (3-4)" />
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/low_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/high_priority_1_2" />
 
-        <TextView
-            android:id="@+id/textView4"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvHighPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/med_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Low Priority (5)" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/medium_priority_3_4" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvMedPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/low_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/low_priority_5" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvLowPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnAddTodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addNewTodo"
+            android:text="@string/add_todo" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnAddTodo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="addNewTodo"
-        android:text="Add Todo" />
-
-</LinearLayout>
+</ScrollView>

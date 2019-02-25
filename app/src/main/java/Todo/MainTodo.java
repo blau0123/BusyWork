@@ -5,12 +5,15 @@ import android.database.SQLException;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.notes.ApplicationClass;
 import com.example.notes.R;
 
 import java.util.ArrayList;
@@ -19,10 +22,17 @@ import Todo.AddTodo;
 import Todo.Todo;
 import Todo.TodoDB;
 
-public class MainTodo extends AppCompatActivity {
+public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapter.ItemClicked,
+                                                            MedPriorityTodoAdapter.ItemClicked,
+                                                            LowPriorityTodoAdapter.ItemClicked{
     LinearLayout high_layout, med_layout, low_layout;
     Button btnAddTodo;
-    int showTodoCode = 199;
+    int addTodoCode = 199;
+
+    // variables for each recyclerview for each priority
+    RecyclerView rvHighPriority, rvMedPriority, rvLowPriority;
+    RecyclerView.Adapter highAdapter, medAdapter, lowAdapter;
+    RecyclerView.LayoutManager highLayoutManager, medLayoutManager, lowLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +40,13 @@ public class MainTodo extends AppCompatActivity {
         setContentView(R.layout.activity_main_todo);
 
         initViews();
-        // for each priority, create checkboxes and add to appropriate linearlayout
+        initObjects();
+        /* for each priority, create checkboxes and add to appropriate linearlayout
         for (int i = 1; i <= 5; i++){
             createCheckboxes(i);
         }
+        */
+        loadCheckBoxes();
     }
 
     public void initViews(){
@@ -41,6 +54,33 @@ public class MainTodo extends AppCompatActivity {
         med_layout = findViewById(R.id.med_layout);
         low_layout = findViewById(R.id.low_layout);
         btnAddTodo = findViewById(R.id.btnAddTodo);
+
+        rvHighPriority = findViewById(R.id.rvHighPriority);
+        rvMedPriority = findViewById(R.id.rvMedPriority);
+        rvLowPriority = findViewById(R.id.rvLowPriority);
+    }
+
+    public void initObjects(){
+        rvHighPriority.setHasFixedSize(true);
+        rvMedPriority.setHasFixedSize(true);
+        rvLowPriority.setHasFixedSize(true);
+
+        // creates a new layout manager for each recyclerview
+        highLayoutManager = new LinearLayoutManager(this);
+        medLayoutManager = new LinearLayoutManager(this);
+        lowLayoutManager = new LinearLayoutManager(this);
+        rvHighPriority.setLayoutManager(highLayoutManager);
+        rvMedPriority.setLayoutManager(medLayoutManager);
+        rvLowPriority.setLayoutManager(lowLayoutManager);
+    }
+
+    /*
+    No matter which priority recyclerview was clicked, will be taken to ShowTodo
+     */
+    @Override
+    public void onItemClicked(int index) {
+        
+        Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -48,49 +88,17 @@ public class MainTodo extends AppCompatActivity {
      */
     public void addNewTodo(View v){
         Intent i = new Intent(this, AddTodo.class);
-        startActivityForResult(i, showTodoCode);
+        startActivityForResult(i, addTodoCode);
     }
 
     /*
-    When return from add note, adds checkbox of new todo to correct linear layout
+    When return from add note, reloads lists of todos with newly added todo
      */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         try {
-            if (requestCode == showTodoCode) {
+            if (requestCode == addTodoCode) {
                 if (resultCode == RESULT_OK) {
-                    // get the priority of the recently added to do
-                    int priorityOfNewTodo = data.getIntExtra("priority", 5);
-                    try{
-                        TodoDB db = new TodoDB(this);
-                        db.open();
-                        ArrayList<Todo> tempTodo = db.getTodoBasedOnPriority(priorityOfNewTodo);
-                        // last elt of this array will be the most recently added todo
-                        CheckBox checkbox = new CheckBox(this);
-                        checkbox.setText(tempTodo.get(tempTodo.size()-1).getTitle());
-
-                        //depending on priority, changes which linear layout to be put into
-                        switch (priorityOfNewTodo) {
-                            case 1:
-                                high_layout.addView(checkbox);
-                                return;
-                            case 2:
-                                high_layout.addView(checkbox);
-                                return;
-                            case 3:
-                                med_layout.addView(checkbox);
-                                return;
-                            case 4:
-                                med_layout.addView(checkbox);
-                                return;
-                            case 5:
-                                low_layout.addView(checkbox);
-                        }
-                        db.close();
-
-                    }
-                    catch(SQLException e){
-                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                    loadCheckBoxes();
                 }
             }
         }
@@ -103,41 +111,44 @@ public class MainTodo extends AppCompatActivity {
     Fetches all todos from database and creates a checkbox in the appropriate linear layout
     based on what priority the todo is
      */
-    public void createCheckboxes(int priority){
-        try {
+    public void loadCheckBoxes(){
+        try{
+            // resets each todo list in ApplicationClass so can reset properly when add new todo
+            ApplicationClass.highPriorityTodo.clear();
+            ApplicationClass.medPriorityTodo.clear();
+            ApplicationClass.lowPriorityTodo.clear();
+
             TodoDB db = new TodoDB(this);
             db.open();
-            ArrayList<Todo> todoToShow = db.getTodoBasedOnPriority(priority);
-            db.close();
-
-            for (int i = 0; i < todoToShow.size(); i++) {
-                System.out.println(todoToShow.get(i).getTitle());
-                CheckBox checkbox = new CheckBox(this);
-                checkbox.setText(todoToShow.get(i).getTitle());
-
-                //depending on priority, changes which linear layout to be put into
-                switch (priority) {
-                    case 1:
-                        high_layout.addView(checkbox);
-                        return;
-                    case 2:
-                        high_layout.addView(checkbox);
-                        return;
-                    case 3:
-                        med_layout.addView(checkbox);
-                        return;
-                    case 4:
-                        med_layout.addView(checkbox);
-                        return;
-                    case 5:
-                        low_layout.addView(checkbox);
+            // go through each priority with a for loop and load todo arraylist for that priority
+            for (int i = 1; i <= 5; i++){
+                // if the priority level is 1, then add to lowpriority list
+                if (i == 1 || i == 2) {
+                    ApplicationClass.highPriorityTodo.addAll(db.getTodoBasedOnPriority(i));
+                }
+                // if the priority level is 2 or 3, add to medpriority list
+                else if (i == 3 || i == 4){
+                    ApplicationClass.medPriorityTodo.addAll(db.getTodoBasedOnPriority(i));
+                }
+                else{
+                    ApplicationClass.lowPriorityTodo.addAll(db.getTodoBasedOnPriority(i));
                 }
             }
+            db.close();
         }
         catch(SQLException e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        // update recyclerview by creating and setting new adapter for each
+        highAdapter = new HighPriorityTodoAdapter(this, ApplicationClass.highPriorityTodo);
+        medAdapter = new MedPriorityTodoAdapter(this, ApplicationClass.medPriorityTodo);
+        lowAdapter = new LowPriorityTodoAdapter(this, ApplicationClass.lowPriorityTodo);
+
+        // sets adapter to each respective recyclerview
+        rvHighPriority.setAdapter(highAdapter);
+        rvMedPriority.setAdapter(medAdapter);
+        rvLowPriority.setAdapter(lowAdapter);
     }
 
 }

@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.notes.ApplicationClass;
 import com.example.notes.R;
 
 import Todo.ShowTodo;
@@ -38,14 +40,6 @@ public class MainNotes extends AppCompatActivity implements NoteAdapter.ItemClic
         //btnAddNote = findViewById(R.id.btnAddNote);
         fab = findViewById(R.id.fab);
         rv = findViewById(R.id.list);
-    }
-
-    /*
-    -------------------------TEMPORARY BUTTON TO TEST TODO FUNCTION ------------------------------
-     */
-    public void bringToTodo(View v){
-        Intent i = new Intent(this, ShowTodo.class);
-        startActivity(i);
     }
 
     public void initObjects(){
@@ -77,8 +71,7 @@ public class MainNotes extends AppCompatActivity implements NoteAdapter.ItemClic
             db.close();
         }
         catch(SQLException e){
-            //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            System.out.println(e.getMessage());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         //reverseNotes(notes);
     }
