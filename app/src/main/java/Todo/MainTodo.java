@@ -2,30 +2,36 @@ package Todo;
 
 import android.content.Intent;
 import android.database.SQLException;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.example.notes.ApplicationClass;
 import com.example.notes.R;
 
-import java.util.ArrayList;
-
-import Todo.AddTodo;
-import Todo.Todo;
-import Todo.TodoDB;
 
 public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapter.ItemClicked,
                                                             MedPriorityTodoAdapter.ItemClicked,
                                                             LowPriorityTodoAdapter.ItemClicked{
     LinearLayout high_layout, med_layout, low_layout;
+
+    // to be able to use a drawer to travel from notes to todo
+    DrawerLayout drawerLayout;
+    NavigationView navView;
+
     Button btnAddTodo;
     int addTodoCode = 199;
 
@@ -41,11 +47,7 @@ public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapt
 
         initViews();
         initObjects();
-        /* for each priority, create checkboxes and add to appropriate linearlayout
-        for (int i = 1; i <= 5; i++){
-            createCheckboxes(i);
-        }
-        */
+
         loadCheckBoxes();
     }
 
@@ -58,6 +60,9 @@ public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapt
         rvHighPriority = findViewById(R.id.rvHighPriority);
         rvMedPriority = findViewById(R.id.rvMedPriority);
         rvLowPriority = findViewById(R.id.rvLowPriority);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
     }
 
     public void initObjects(){
@@ -72,15 +77,28 @@ public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapt
         rvHighPriority.setLayoutManager(highLayoutManager);
         rvMedPriority.setLayoutManager(medLayoutManager);
         rvLowPriority.setLayoutManager(lowLayoutManager);
+
+        /*
+        Allows user to go to different activites based on what item is selected in navmenu
+         */
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                // code to choose where to go to based on what item was selected
+                return true;
+            }
+        });
+
     }
 
     /*
-    No matter which priority recyclerview was clicked, will be taken to ShowTodo
-     */
+        No matter which priority recyclerview was clicked, will be taken to ShowTodo
+         */
     @Override
     public void onItemClicked(int index) {
-        
-        Toast.makeText(this, "Clicked!", Toast.LENGTH_SHORT).show();
+
     }
 
     /*
@@ -95,15 +113,10 @@ public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapt
     When return from add note, reloads lists of todos with newly added todo
      */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        try {
-            if (requestCode == addTodoCode) {
-                if (resultCode == RESULT_OK) {
-                    loadCheckBoxes();
-                }
+        if (requestCode == addTodoCode) {
+            if (resultCode == RESULT_OK) {
+                loadCheckBoxes();
             }
-        }
-        catch(Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
