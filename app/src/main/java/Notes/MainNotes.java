@@ -3,29 +3,39 @@ package Notes;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.notes.ApplicationClass;
 import com.example.notes.R;
 
-import Todo.ShowTodo;
+import Todo.MainTodo;
 
 public class MainNotes extends AppCompatActivity implements NoteAdapter.ItemClicked{
     //Button btnAddNote;
     FloatingActionButton fab;
+
     //variables to work with recyclerview
     RecyclerView rv;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
+
     // code for when returning from shownote in case any note was updated
     int showNoteCode = 300;
+
+    // to be able to use a drawer to travel from notes to todo
+    DrawerLayout drawerLayout;
+    NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +47,38 @@ public class MainNotes extends AppCompatActivity implements NoteAdapter.ItemClic
     }
 
     public void initViews(){
-        //btnAddNote = findViewById(R.id.btnAddNote);
         fab = findViewById(R.id.fab);
         rv = findViewById(R.id.list);
+
+        drawerLayout = findViewById(R.id.drawer_notes_layout);
+        navView = findViewById(R.id.nav_notes_view);
     }
 
     public void initObjects(){
+        // setting layout manager for recyclerview
         rv.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(layoutManager);
+
+         /*
+        Allows user to go to different activites based on what item is selected in navmenu
+         */
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                // code to choose where to go to based on what item was selected
+                switch (menuItem.getItemId()){
+                    // if notes tab is chosen, open notes
+                    case R.id.nav_todo:
+                        Intent i = new Intent(MainNotes.this, MainTodo.class);
+                        startActivity(i);
+
+                }
+                return true;
+            }
+        });
     }
 
     /*

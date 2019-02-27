@@ -22,6 +22,8 @@ import android.support.v7.widget.Toolbar;
 import com.example.notes.ApplicationClass;
 import com.example.notes.R;
 
+import Notes.MainNotes;
+
 
 public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapter.ItemClicked,
                                                             MedPriorityTodoAdapter.ItemClicked,
@@ -61,8 +63,8 @@ public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapt
         rvMedPriority = findViewById(R.id.rvMedPriority);
         rvLowPriority = findViewById(R.id.rvLowPriority);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navView = findViewById(R.id.nav_view);
+        drawerLayout = findViewById(R.id.drawer_todo_layout);
+        navView = findViewById(R.id.nav_todo_view);
     }
 
     public void initObjects(){
@@ -87,6 +89,13 @@ public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapt
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 // code to choose where to go to based on what item was selected
+                switch (menuItem.getItemId()){
+                    // if notes tab is chosen, open notes
+                    case R.id.nav_notes:
+                        Intent i = new Intent(MainTodo.this, MainNotes.class);
+                        startActivity(i);
+
+                }
                 return true;
             }
         });

@@ -15,16 +15,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent i = new Intent(this, MainTodo.class);
-        startActivity(i);
-    }
-
-    public void goToNotes(View v){
-        Intent i = new Intent(this, MainNotes.class);
-        startActivity(i);
-    }
-
-    public void goToTodo(View v){
+        // have user begin at todo list
         Intent i = new Intent(this, MainTodo.class);
         startActivity(i);
     }

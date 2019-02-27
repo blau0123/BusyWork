@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/drawer_todo_layout"
     tools:context="Todo.MainTodo">
 
     <ScrollView
@@ -16,14 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:text="To-Do List"
-            android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:text="To-Do List"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/high_layout"
@@ -84,15 +86,19 @@
 
             <Button
                 android:id="@+id/btnAddTodo"
-                android:layout_width="match_parent"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:onClick="addNewTodo"
-                android:text="@string/add_todo" />
+                android:text="@string/add_todo"
+                tools:layout_editor_absoluteY="734dp" />
+
         </LinearLayout>
     </ScrollView>
-    
+
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nav_todo_view"
         android:fitsSystemWindows="true"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
