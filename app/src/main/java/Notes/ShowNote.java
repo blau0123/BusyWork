@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notes.MainActivity;
 import com.example.notes.R;
 
 public class ShowNote extends AppCompatActivity {
@@ -67,7 +68,7 @@ public class ShowNote extends AppCompatActivity {
         db.close();
 
         // return to updated MainNotes
-        Intent i = new Intent(this, MainNotes.class);
+        Intent i = new Intent(this, MainActivity.class);
         setResult(RESULT_OK);
         this.finish();
     }
@@ -111,7 +112,7 @@ public class ShowNote extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent i = new Intent(this, MainNotes.class);
+        Intent i = new Intent(this, MainActivity.class);
         setResult(RESULT_OK);
         this.finish();
     }

@@ -103,8 +103,8 @@ public class MainTodo extends AppCompatActivity implements HighPriorityTodoAdapt
     }
 
     /*
-        No matter which priority recyclerview was clicked, will be taken to ShowTodo
-         */
+    No matter which priority recyclerview was clicked, will be taken to ShowTodo
+    */
     @Override
     public void onItemClicked(int index) {
 

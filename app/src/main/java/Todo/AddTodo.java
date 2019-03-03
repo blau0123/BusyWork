@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.notes.MainActivity;
 import com.example.notes.R;
 
 public class AddTodo extends AppCompatActivity {
@@ -75,7 +76,7 @@ public class AddTodo extends AppCompatActivity {
             enterTodoToDB();
 
             // return back to maintodo with the priority of the new todo
-            Intent i = new Intent(this, MainTodo.class);
+            Intent i = new Intent(this, MainActivity.class);
             i.putExtra("priority", priority);
             setResult(RESULT_OK, i);
             AddTodo.this.finish();
