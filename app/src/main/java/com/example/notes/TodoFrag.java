@@ -47,12 +47,6 @@ public class TodoFrag extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_todo, container, false);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
         // connect recyclerviews with their components
         rvHighPriority = view.findViewById(R.id.rvHighPriority);
@@ -84,6 +78,13 @@ public class TodoFrag extends Fragment {
                 getActivity().startActivityForResult(i, addTodoCode);
             }
         });
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     public void notifyDataChanged(){

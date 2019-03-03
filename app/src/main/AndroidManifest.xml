@@ -12,8 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="Todo.MainTodo"></activity>
-        <activity android:name="Notes.MainNotes" />
         <activity android:name="Todo.AddTodo" />
         <activity android:name="Notes.EditNote" />
         <activity android:name="Notes.ShowNote" />

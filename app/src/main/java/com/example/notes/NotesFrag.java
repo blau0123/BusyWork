@@ -1,8 +1,6 @@
 package com.example.notes;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import Notes.AddNote;
-import Notes.MainNotes;
 import Notes.NoteAdapter;
 
 public class NotesFrag extends Fragment{
@@ -41,12 +38,6 @@ public class NotesFrag extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_notes, container, false);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
         // seting up recyclerview
         rv = view.findViewById(R.id.rvNoteList);
@@ -64,6 +55,13 @@ public class NotesFrag extends Fragment{
                 startActivity(i);
             }
         });
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     public void notifyDataChanged(){

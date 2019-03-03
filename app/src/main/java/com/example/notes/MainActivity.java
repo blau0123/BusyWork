@@ -3,25 +3,24 @@ package com.example.notes;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import Notes.MainNotes;
 import Notes.NoteAdapter;
 import Notes.NotesDB;
 import Notes.ShowNote;
-import Todo.AddTodo;
 import Todo.HighPriorityTodoAdapter;
 import Todo.LowPriorityTodoAdapter;
-import Todo.MainTodo;
 import Todo.MedPriorityTodoAdapter;
 import Todo.TodoDB;
 
@@ -33,13 +32,15 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     FragmentManager fragMan;
     // layout that will hold both fragments (created dynamically)
     FrameLayout frag_container;
+    FragmentTransaction frag_trans;
 
     // code for when returning from shownote in case any note was updated
     int showNoteCode = 300;
     int addTodoCode = 500;
 
-    //components on todo frag
-    Button btnAddTodo;
+    // to be able to use a drawer to travel from notes to todo
+    DrawerLayout drawerLayout;
+    NavigationView navView;
 
 
     @Override
@@ -47,16 +48,57 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // setting up fragments and fragment container
         fragMan = this.getSupportFragmentManager();
+        frag_trans = fragMan.beginTransaction();
         frag_container = findViewById(R.id.frag_container);
+
+        // setting up nav drawer
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
+
+          /*
+        Allows user to go to different activites based on what item is selected in navmenu
+         */
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                frag_trans = fragMan.beginTransaction();
+
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                // code to choose where to go to based on what item was selected
+                switch (menuItem.getItemId()){
+                    // if notes tab is chosen, open todo
+                    case R.id.nav_notes:
+                        frag_trans.replace(R.id.frag_container, new NotesFrag());
+                        frag_trans.addToBackStack(null);
+                        frag_trans.commit();
+
+                        // load in notes when go to notes tab
+                        new MainActivity.getData().execute();
+                        break;
+                    // if todo frag is chosen, open notes
+                    case R.id.nav_todo:
+                        frag_trans.replace(R.id.frag_container, new TodoFrag());
+                        frag_trans.addToBackStack(null);
+                        frag_trans.commit();
+
+                        // load in checkbox lists when go to todo list tab
+                        loadCheckBoxes();
+                        break;
+                }
+                return true;
+            }
+        });
 
         if (frag_container != null){
             if (savedInstanceState != null){
                 return;
             }
-            //fragMan.beginTransaction().add(R.id.frag_container, new NotesFrag()).commit();
-            fragMan.beginTransaction().add(R.id.frag_container, new TodoFrag()).commit();
-            //new MainActivity.getData().execute();
+
+            // set first frag to be seen by user as todo frag
+            frag_trans.replace(R.id.frag_container, new TodoFrag()).commit();
             loadCheckBoxes();
         }
     }
