@@ -6,4 +6,7 @@
     <item
         android:id="@+id/context_convert"
         android:title="Convert Note to Todo"/>
+    <item
+        android:id="@+id/context_edit"
+        android:title="Edit" />
 </menu>

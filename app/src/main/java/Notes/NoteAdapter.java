@@ -80,9 +80,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
             // create a new menu item
             MenuItem delete = menu.add(Menu.NONE, R.id.context_delete, Menu.NONE, "Delete");
             MenuItem convert = menu.add(Menu.NONE, R.id.context_convert, Menu.NONE, "Convert Note to Todo");
+            MenuItem edit = menu.add(Menu.NONE, R.id.context_edit, Menu.NONE, "Edit");
             // sets what to do when menu item is clicked
             delete.setOnMenuItemClickListener(onEditMenu);
             convert.setOnMenuItemClickListener(onEditMenu);
+            edit.setOnMenuItemClickListener(onEditMenu);
         }
 
         /*
@@ -98,10 +100,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
                             NotesDB db = new NotesDB(ctx);
                             db.open();
                             db.deleteEntry(notes.get(getAdapterPosition()).getID());
+                            // update recyclerview list of the deleted note
                             notes = db.getAllNotes();
                             ApplicationClass.notes = db.getAllNotes();
-                            db.close();
                             notifyDataSetChanged();
+                            db.close();
+
                             Toast.makeText(ctx, "Note deleted!", Toast.LENGTH_SHORT).show();
                         }
                         catch (SQLException e){
@@ -119,6 +123,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
                             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    // if the edit item clicked, bring user to edit note with the note contents
+                    case R.id.context_edit:
+                        Intent i = new Intent(ctx, EditNote.class);
+                        i.putExtra("itemID", notes.get(getAdapterPosition()).getID());
+                        ctx.startActivity(i);
                 }
                 return true;
             }
