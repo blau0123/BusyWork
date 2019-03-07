@@ -9,9 +9,12 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -43,11 +46,20 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     DrawerLayout drawerLayout;
     NavigationView navView;
 
+    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // adding toolbar as the actionbar for the activity, allowing tap to navdrawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         // setting up fragments and fragment container
         fragMan = this.getSupportFragmentManager();
@@ -102,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
             frag_trans.replace(R.id.frag_container, new TodoFrag()).commit();
             loadCheckBoxes();
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //-------------------------- NOTES SECTION ----------------------------
