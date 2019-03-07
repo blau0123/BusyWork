@@ -55,10 +55,11 @@ public class AddNote extends AppCompatActivity {
                 db.close();
                 Toast.makeText(this, "Note successfully saved!", Toast.LENGTH_SHORT).show();
 
-                // Brings user back to MainNotes (list of notes)
+                // Brings user back to MainActivity (list of notes)
                 Intent i = new Intent(AddNote.this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                setResult(RESULT_OK);
+                this.finish();
             }
             catch(SQLException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

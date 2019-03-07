@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     // code for when returning from shownote in case any note was updated
     int showNoteCode = 300;
     int addTodoCode = 500;
+    int addNoteCode = 10;
 
     // to be able to use a drawer to travel from notes to todo
     DrawerLayout drawerLayout;
@@ -164,7 +165,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
      */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         // if come back from shownote activity, reset notes
-        if (requestCode == showNoteCode){
+        if (requestCode == showNoteCode || requestCode == addNoteCode){
+            System.out.println("in here");
             // will update recyclerview no matter what result code
             new MainActivity.getData().execute();
         }

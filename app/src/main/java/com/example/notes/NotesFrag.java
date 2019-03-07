@@ -7,9 +7,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 
 import Notes.AddNote;
 import Notes.NoteAdapter;
@@ -21,6 +29,8 @@ public class NotesFrag extends Fragment{
     RecyclerView rv;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
+
+    int addNoteCode = 10;
 
     View view;
 
@@ -52,7 +62,7 @@ public class NotesFrag extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), AddNote.class);
-                startActivity(i);
+                getActivity().startActivityForResult(i, addNoteCode);
             }
         });
 

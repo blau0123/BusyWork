@@ -1,21 +1,36 @@
 package Notes;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.SQLException;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.notes.ApplicationClass;
+import com.example.notes.MainActivity;
 import com.example.notes.R;
 
 import java.util.ArrayList;
+
+import Todo.AddTodo;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     // arraylist of notes to be shown in list
     private ArrayList<Note> notes;
     ItemClicked activity;
+    // the context in which the recyclerview this adapter is used for is in
+    Context ctx;
+    int position;
 
     /*
     Interface to be implemented by activites that want to use
@@ -31,9 +46,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     public NoteAdapter(Context context, ArrayList<Note> list){
         notes = list;
         activity = (ItemClicked) context;
+        ctx = context;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         // component in list item that will change for each list item
         TextView tvListTitle, tvListNote;
 
@@ -52,7 +68,61 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
                     activity.onItemClicked(notes.indexOf((Note) v.getTag()));
                 }
             });
+
+            // registers recyclerview views for context menu when long click
+            itemView.setOnCreateContextMenuListener(this);
         }
+
+        /*
+        Creates context menu (adds the menu items)
+         */
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            // create a new menu item
+            MenuItem delete = menu.add(Menu.NONE, R.id.context_delete, Menu.NONE, "Delete");
+            MenuItem convert = menu.add(Menu.NONE, R.id.context_convert, Menu.NONE, "Convert Note to Todo");
+            // sets what to do when menu item is clicked
+            delete.setOnMenuItemClickListener(onEditMenu);
+            convert.setOnMenuItemClickListener(onEditMenu);
+        }
+
+        /*
+        Listener to execute commands onclick of context menu item
+         */
+        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    // if the delete context menu item clicked, delete the item
+                    case R.id.context_delete:
+                        try {
+                            NotesDB db = new NotesDB(ctx);
+                            db.open();
+                            db.deleteEntry(notes.get(getAdapterPosition()).getID());
+                            notes = db.getAllNotes();
+                            ApplicationClass.notes = db.getAllNotes();
+                            db.close();
+                            notifyDataSetChanged();
+                            Toast.makeText(ctx, "Note deleted!", Toast.LENGTH_SHORT).show();
+                        }
+                        catch (SQLException e){
+                            Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    // if the convert item clicked, bring user to add todo with the note title
+                    case R.id.context_convert:
+                        try{
+                            Intent i = new Intent(ctx, AddTodo.class);
+                            i.putExtra("todoTitle", notes.get(getAdapterPosition()).getTitle());
+                            ctx.startActivity(i);
+                        }
+                        catch (SQLException e){
+                            Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+                return true;
+            }
+        };
     }
 
     @NonNull
@@ -66,11 +136,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     Sets what the contents of the list item should show
      */
     @Override
-    public void onBindViewHolder(@NonNull NoteAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final NoteAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(notes.get(i));
+        // sets title to note title and note body to the first 50 characters of the note.
         String titleText = notes.get(i).getTitle();
         viewHolder.tvListTitle.setText(titleText);
-        //only shows the first 15 characters of the note body, or whole body if body is < 15 characters
+        //only shows the first 50 characters of the note body, or whole body if body is < 50 characters
         if (notes.get(i).getNote().length() > 50) {
             viewHolder.tvListNote.setText(notes.get(i).getNote().substring(0, 50));
         }
@@ -82,5 +153,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
     @Override
     public int getItemCount() {
         return notes.size();
+    }
+
+    public int getPosition(){
+        return position;
+    }
+
+    public void setPosition(int position1){
+        position = position1;
     }
 }

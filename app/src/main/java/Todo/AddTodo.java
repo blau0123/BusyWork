@@ -55,7 +55,13 @@ public class AddTodo extends AppCompatActivity {
     }
 
     public void initViews(){
+        // get passed in todo title if using note to todo conversion
+        Intent i = getIntent();
+        String todoTitle = i.getStringExtra("todoTitle");
+
         etTodo = findViewById(R.id.etTodo);
+        // sets text of todo to text of todo
+        etTodo.setText(todoTitle);
         etDescr = findViewById(R.id.etDescr);
         rgPriority = findViewById(R.id.rgPriority);
     }
