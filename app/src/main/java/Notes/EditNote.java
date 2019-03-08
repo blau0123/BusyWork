@@ -2,8 +2,10 @@ package Notes;
 
 import android.content.Intent;
 import android.database.SQLException;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,8 @@ public class EditNote extends AppCompatActivity {
     EditText etEditTitle, etEditNote;
     Button btnFinishEdit;
     int id;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,12 @@ public class EditNote extends AppCompatActivity {
         etEditTitle.setText(currNote.getTitle());
         etEditNote.setText(currNote.getNote());
         db.close();
+
+        // adding toolbar as the actionbar for the activity, allowing tap to navdrawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     /*

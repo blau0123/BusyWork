@@ -119,7 +119,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
                             i.putExtra("todoTitle", notes.get(getAdapterPosition()).getTitle());
                             ctx.startActivity(i);
                         }
-                        catch (SQLException e){
+                        catch (Exception e){
                             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                         break;

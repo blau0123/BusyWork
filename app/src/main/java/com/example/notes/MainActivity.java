@@ -116,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
         }
     }
 
+    /*
+    Handles whenever a menu option was selected (used for nav drawer opening)
+     */
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case android.R.id.home:

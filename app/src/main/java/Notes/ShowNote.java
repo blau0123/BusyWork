@@ -2,8 +2,13 @@ package Notes;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,13 +17,15 @@ import android.widget.Toast;
 import com.example.notes.MainActivity;
 import com.example.notes.R;
 
+import Todo.AddTodo;
+
 public class ShowNote extends AppCompatActivity {
     TextView tvBody, tvTitle;
-    Button btnEdit;
-    Button btnDelete;
     // code for editnote to know that editnote is returning back data
     final int editNoteCode = 200;
     int id;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +39,12 @@ public class ShowNote extends AppCompatActivity {
     public void initViews(){
         tvBody = findViewById(R.id.tvBody);
         tvTitle = findViewById(R.id.tvTitle);
-        btnEdit = findViewById(R.id.btnEdit);
-        btnDelete = findViewById(R.id.btnDelete);
+
+        // adding toolbar as the actionbar for the activity, allowing tap to navdrawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     /*
@@ -49,9 +60,39 @@ public class ShowNote extends AppCompatActivity {
     }
 
     /*
-    When user wants to edit the note, send the note id to EditNote
+    Inflates the options menu
      */
-    public void btnEditClicked(View v){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    /*
+    Handles actions for whenever an option is chosen
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.options_delete:
+                deleteNote();
+                return true;
+            case R.id.options_edit:
+                editNote();
+                return true;
+            case R.id.options_convert:
+                convertNote();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+    Method to send user to the edit note screen
+     */
+    public void editNote(){
         Intent i = new Intent(ShowNote.this, EditNote.class);
         // gives editnote the index of item clicked (which will be the rowid in the database)
         i.putExtra("itemID", id);
@@ -61,7 +102,7 @@ public class ShowNote extends AppCompatActivity {
     /*
     Delete note and return to previous activity (MainNotes)
      */
-    public void btnDeleteClicked(View v){
+    public void deleteNote(){
         NotesDB db = new NotesDB(this);
         db.open();
         db.deleteEntry(id);
@@ -71,6 +112,15 @@ public class ShowNote extends AppCompatActivity {
         Intent i = new Intent(this, MainActivity.class);
         setResult(RESULT_OK);
         this.finish();
+    }
+
+    /*
+    Sends user to the add todo (creates new todo with the title of the note)
+     */
+    public void convertNote(){
+        Intent i = new Intent(this, AddTodo.class);
+        i.putExtra("todoTitle", tvTitle.getText().toString().trim());
+        startActivity(i);
     }
 
     /*

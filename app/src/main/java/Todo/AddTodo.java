@@ -2,8 +2,10 @@ package Todo;
 
 import android.content.Intent;
 import android.database.SQLException;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -16,6 +18,8 @@ public class AddTodo extends AppCompatActivity {
     EditText etTodo, etDescr;
     RadioGroup rgPriority;
     int priority;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,12 @@ public class AddTodo extends AppCompatActivity {
         etTodo.setText(todoTitle);
         etDescr = findViewById(R.id.etDescr);
         rgPriority = findViewById(R.id.rgPriority);
+
+        // adding toolbar as the actionbar for the activity, allowing tap to navdrawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     /*

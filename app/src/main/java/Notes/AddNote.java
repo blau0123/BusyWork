@@ -22,6 +22,8 @@ public class AddNote extends AppCompatActivity {
     EditText etInsertTitle, etInsertNote;
     Button btnAdd;
 
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,12 @@ public class AddNote extends AppCompatActivity {
         etInsertTitle = findViewById(R.id.etInsertTitle);
         etInsertNote = findViewById(R.id.etInsertNote);
         btnAdd = findViewById(R.id.btnAdd);
+
+        // adding toolbar as the actionbar for the activity, allowing tap to navdrawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     /*
